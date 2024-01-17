@@ -68,28 +68,20 @@ class ChatScreen extends StatelessWidget {
                     child: TextField(
                       controller: messageController,
                       onSubmitted: (messageData) {
-                        messages.add({
-                          'message': messageData,
-                          'createdAtTime': DateTime.now(),
-                          'id': userEmail,
-                        });
+                        addMessageToDatabase(messageData, userEmail);
                         messageController.clear();
-                        listViewController.animateTo(
-                          0,
-                          duration: const Duration(
-                            microseconds: 500,
-                          ),
-                          curve: Curves.easeIn,
-                        );
+                        listViewAnimation();
                       },
                       decoration: InputDecoration(
                         hintText: "Send Message",
                         suffixIcon: IconButton(
-                          onPressed: () {
-                            // sending message code
-                          },
                           icon: const Icon(Icons.send),
                           color: kSenderPrimaryColor,
+                          onPressed: () {
+                            // sending message code
+                            messageController.clear();
+                            listViewAnimation();
+                          },
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.0),
@@ -120,5 +112,23 @@ class ChatScreen extends StatelessWidget {
             );
           }
         });
+  }
+
+  void listViewAnimation() {
+    listViewController.animateTo(
+      0,
+      duration: const Duration(
+        microseconds: 500,
+      ),
+      curve: Curves.easeIn,
+    );
+  }
+
+  void addMessageToDatabase(String messageData, Object? userEmail) {
+    messages.add({
+      'message': messageData,
+      'createdAtTime': DateTime.now(),
+      'id': userEmail,
+    });
   }
 }
