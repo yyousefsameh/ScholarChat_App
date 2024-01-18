@@ -78,7 +78,8 @@ class ChatScreen extends StatelessWidget {
                           icon: const Icon(Icons.send),
                           color: kSenderPrimaryColor,
                           onPressed: () {
-                            // sending message code
+                            final messageData = messageController.text;
+                            addMessageToDatabase(messageData, userEmail);
                             messageController.clear();
                             listViewAnimation();
                           },
